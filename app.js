@@ -1,16 +1,17 @@
-import express from 'express'
-import { router as indexPath} from './router/index.js';
-import { router as genericPath} from './router/generic.js';
-import { router as elemPath} from './router/elements.js';
-const app = express()
+const express = require("express")
+const app = express() 
 const port = 8080
-app.use(express.static('public'));
+const hbs = require('hbs');
+
+//set server port
+app.listen(port,()=>{console.log("App runing on port:",port)})
+
+//hbs config
 app.set('view engine','hbs')
-
-
-app.use('/', indexPath);
-app.use('/elements',elemPath);
-app.use('/generic', genericPath);
-
-
-app.listen(port,()=>{console.log(port)})
+hbs.registerPartials(__dirname + '/views/partials', function (err) {});
+//static supplies
+app.use(express.static('public'));
+//basic routing
+app.get('/',(req,res)=>{
+    res.render('home')
+})
